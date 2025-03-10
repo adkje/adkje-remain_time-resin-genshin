@@ -6,6 +6,7 @@ User1_cookie_token = "^^^"
 User1_ltoken = "^^^"
 User1_ltuid = "^^^"
 User1_uid = "^^^"
+DiscordID1 = "^^^^"
 # How to get the information?
     # First, you should install Edit This Cookie on Opera.
     # Second, use it on the HoYoverse site to get some information.

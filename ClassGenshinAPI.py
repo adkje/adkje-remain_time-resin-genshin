@@ -1,9 +1,8 @@
 import asyncio
 import requests
 import time
-import GenshinDisco
 import GenshinAPIList as Glist
-import GenshinAPIListForGithub as Glist
+# import GenshinAPIListForGithub as Glist
 
 # url = "https://bbs-api.mihoyo.com/apihub/wapi/search"
 # I don't know how to use the API with this URL.
@@ -48,10 +47,10 @@ class User:
             if self.wait_time != 0:
                 print(self.wait_time)
                 await asyncio.sleep(self.wait_time)
-
-            elif 601 > self.resin_time:
-                print(self.wait_time)
-                await asyncio.sleep(self.wait_time)
+                if 40000 > self.resin_time:
+                    print(self.wait_time)
+                    await asyncio.sleep(self.wait_time)
+                    # await on_ready()
 
             else:
                 print(self.wait_time)
@@ -66,6 +65,6 @@ User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_l
 
 Alluser = [User1]
 
-asyncio.run(User.hello())
+# asyncio.run(User.hello())
 
 # 多分計算部分とsleep部分はこれで完成かな？
