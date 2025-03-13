@@ -12,6 +12,15 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+async def once():
+    global count
+    if count == 0:
+        await client.close()
+        count = count + 1
+        print(count)
+
+count = 0
+
 @client.event
 async def on_ready():
     # user = client.fetch_user(DiscordID1)
@@ -20,7 +29,9 @@ async def on_ready():
     print(f'We have logged in as {client.user}')
     print("さくせす")
     print("sakusesuato")
-    # await Send_resin_time("hello1")
+    # await once()
+    print("end")
+
     
 async def OverOneHundredEighy(UntilTwoHundred):
     await SendUser.send(f"180を超しています！200に達するまで{UntilTwoHundred}分です。！")
@@ -32,7 +43,6 @@ async def caveat():
 
 async def BootBot():
     await client.start(Distoken)
-    
+
+# client.run(Distoken)
 print("読み込み")
-# asyncio.run(BootBot())
-# client.start(Distoken)
