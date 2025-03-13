@@ -21,7 +21,7 @@ async def on_ready():
     print("さくせす")
     print("sakusesuato")
     # await Send_resin_time("hello1")
-
+# test  
     
 async def OverOneHundredEighy(UntilTwoHundred):
     await SendUser.send(f"180を超しています！200に達するまで{UntilTwoHundred}分です。！")
