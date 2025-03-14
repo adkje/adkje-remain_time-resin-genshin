@@ -85,9 +85,9 @@ User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_l
 Alluser = [User1]  
 # ここまでは変える必要はない。
 async def aiueo():
-    await User.Send_API()
-    await keisan(User.Send_API())
-    await okurimasu()
+    await User1.Send_API()
+    await keisan(ohayou)
+    await okurimasu(keisan_resin_time,Max_minute,keisan_wait_time)
     
 
     # await asyncio.gather(ActiveDisco.BootBot(),*(NowUser.hello() for NowUser in Alluser))
