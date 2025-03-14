@@ -2,8 +2,10 @@ import discord
 import asyncio
 from GenshinAPIList import Distoken
 from GenshinAPIList import DiscordID1
-
+# import main
 # from GenshinAPIListForGithub import token
+print("a") 
+print(__name__)
 
 intents = discord.Intents.default()
 intents.message_content = True

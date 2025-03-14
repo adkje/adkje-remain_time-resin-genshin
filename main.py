@@ -3,7 +3,7 @@ import requests
 import time
 import math
 import GenshinAPIList as Glist
-import GenshinDisco
+import ActiveDisco
 # import GenshinAPIListForGithub as Glist
 
 # url = "https://bbs-api.mihoyo.com/apihub/wapi/search"
@@ -44,6 +44,7 @@ class User:
         print("all_process")
         await asyncio.sleep(10)
         # クソみたいな実装方法だからいつか直す。多分。恐らく。
+        # botが起動してSendUserが定義される前に下の処理が走っちゃうからOverOneHundredEighy()でエラーが出る。
         while True:
             response = requests.get(url, cookies = self.cookies, params = self.params).json()
             self.resin_time = int(response["data"]["resin_recovery_time"])
@@ -67,13 +68,13 @@ class User:
                 if 9600 > self.resin_time:
                 # 樹脂が180以上
                     print("mattemasu")
-                    await GenshinDisco.OverOneHundredEighy(self.Max_minute)
+                    await ActiveDisco.OverOneHundredEighy(self.Max_minute)
                     await asyncio.sleep(self.wait_time)
 
 
             else:
                 print(self.wait_time)
-                # await GenshinDisco.caveat()
+                await ActiveDisco.caveat()
                 await asyncio.sleep(1200)
                 # 秘境の樹脂消費量に合わせた20樹脂(60*20)
 
@@ -84,7 +85,7 @@ User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_l
 
 Alluser = [User1]  
 async def AllBoot():
-    await asyncio.gather(GenshinDisco.BootBot(),*(NowUser.all_process() for NowUser in Alluser))
+    await asyncio.gather(ActiveDisco.BootBot(),*(NowUser.all_process() for NowUser in Alluser))
 
 asyncio.run(AllBoot())
 
