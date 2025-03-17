@@ -61,7 +61,7 @@ class User:
 
             if self.resin_time != 0:
                 print(f"待つ秒数は{self.wait_time}")
-
+                await asyncio.sleep(self.wait_time)
                 # if 100000 > self.resin_time:
                 # デバッグ用
 
@@ -88,4 +88,3 @@ async def AllBoot():
     await asyncio.gather(ActiveDisco.BootBot(),*(NowUser.all_process() for NowUser in Alluser))
 
 asyncio.run(AllBoot())
-
