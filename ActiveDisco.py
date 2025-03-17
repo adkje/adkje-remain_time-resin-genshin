@@ -32,6 +32,7 @@ async def caveat():
 async def BootBot():
     print("あああああああああああああああああああああああ")
     await client.start(Distoken)
+    print("iiiiiiiiiiii")
 
 # async def once():
 #     print("hayouha")

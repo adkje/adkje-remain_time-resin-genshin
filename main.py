@@ -104,7 +104,6 @@ async def All_process(NowNowUser):
 async def main():
     global count
     count = 0
-    while True:
-        await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
+    await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
 
 asyncio.run(main())
