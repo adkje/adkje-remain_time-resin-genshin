@@ -12,15 +12,6 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-async def once():
-    global count
-    if count == 0:
-        await client.close()
-        count = count + 1
-        print(count)
-
-count = 0
-
 @client.event
 async def on_ready():
     # user = client.fetch_user(DiscordID1)
@@ -28,7 +19,6 @@ async def on_ready():
     SendUser = await client.fetch_user(DiscordID1)
     print(f'We have logged in as {client.user}')
     print("さくせす")
-    # await once()
 
     
 async def OverOneHundredEighy(UntilTwoHundred):
@@ -40,7 +30,21 @@ async def caveat():
     await SendUser.send("樹脂が溢れています！")
 
 async def BootBot():
+    print("あああああああああああああああああああああああ")
     await client.start(Distoken)
 
-# client.run(Distoken)
-print("読み込み")
+# async def once():
+#     print("hayouha")
+#     await asyncio.sleep(20)  # 10秒後にボットを終了
+#     await client.close(Distoken)
+
+
+#     print("end")
+
+# def aslkdj():
+#     client.run(Distoken)
+
+
+# aslkdj()
+# asyncio.run(once())
+

@@ -46,7 +46,7 @@ class User:
         self.Receive_resin_time = int(self.Receive_response["data"]["resin_recovery_time"])
         return self.Receive_resin_time
 
-async def keisan(keisan_resin_time):
+async def various_calculation(keisan_resin_time):
     global keisan_wait_time
     keisan_wait_time = keisan_resin_time % 480
     #  次の樹脂までの秒数(60秒*8で八分)。sleep時間に使用。
@@ -61,15 +61,18 @@ async def keisan(keisan_resin_time):
     
     
 
-async def okurimasu(keisan_resin_time,Max_minute,keisan_wait_time):
+async def SendDis(keisan_resin_time,Max_minute,keisan_wait_time):
     if keisan_resin_time != 0:
     # if 100000 > self.resin_time:
     # デバッグ用
         print("okurimasu")
+        print(keisan_resin_time)
 
-        if 9600 > keisan_resin_time:
+        # if 9600 > keisan_resin_time:
+        if 70000 > keisan_resin_time:
         # 樹脂が180以上
-            print("mattemasu")
+            print("これはMax_minuteです。")
+            print(Max_minute)
             await ActiveDisco.OverOneHundredEighy(Max_minute)
             await asyncio.sleep(keisan_wait_time)
 
@@ -85,35 +88,23 @@ User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_l
 
 Alluser = [User1]
 
-# async fdef handle_user(user):
-#     ohayou = await user.Send_API()
-#     naze = await keisan(ohayou)
-#     await okurimasu(naze)
+# 美しくない実装だからいつか直す。多分。おそらく。
+def once(count):
+    if count == 0:
+        time.sleep(20)
+        count += 1
 
-# async def aiueo():
-#     # すべてのユーザーを同時に処理するためにgatherを使用
-#     await asyncio.gather(*(handle_user(user) for user in Alluser))
+async def All_process(NowNowUser):
+        # ActiveDisco.BootBot()でSendUserが定義される前にSendDisが実行されてエラーが出るからそれの対策。
+        once(count)
+        APIconsequence = await NowNowUser.Send_API()
+        kekka = await various_calculation(APIconsequence)
+        await SendDis(*(kekka))
 
-# async def main():
-#     # ボットとユーザー処理を同時に実行
-#     await asyncio.gather(
-#         ActiveDisco.BootBot(),
-#         aiueo()
-#     )
-
-# # # メインコルーチンを開始
-# asyncio.run(main())
-
-async def aiueo(ohayou):
-        ohayou = await ohayou.Send_API()
-        naze =  await keisan(ohayou)
-        await okurimasu(*(naze))
-
-async def konnnitiha():
-        await asyncio.gather(aiueo(ohayou) for ohayou in Alluser)
-        
 async def main():
-    # await asyncio.gather(ActiveDisco.BootBot(),*(aiueo(NowUser) for NowUser in Alluser))
-    await asyncio.gather(ActiveDisco.BootBot(),konnnitiha())
+    global count
+    count = 0
+    while True:
+        await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
 
 asyncio.run(main())
