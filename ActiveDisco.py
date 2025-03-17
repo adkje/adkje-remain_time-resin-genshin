@@ -28,9 +28,7 @@ async def on_ready():
     SendUser = await client.fetch_user(DiscordID1)
     print(f'We have logged in as {client.user}')
     print("さくせす")
-    print("sakusesuato")
     # await once()
-    print("end")
 
     
 async def OverOneHundredEighy(UntilTwoHundred):
