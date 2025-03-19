@@ -88,15 +88,11 @@ User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_l
 
 Alluser = [User1]
 
-# 美しくない実装だからいつか直す。多分。おそらく。
-def once(count):
-    if count == 0:
-        time.sleep(20)
-        count += 1
 
 async def All_process(NowNowUser):
         # ActiveDisco.BootBot()でSendUserが定義される前にSendDisが実行されてエラーが出るからそれの対策。
-        once(count)
+        # await asyncio.sleep(10)
+        print("ぁksdjf；lかjdlk；fじゃ；ljdf；l亜jsdl；kfじゃs；lkjdflkじゃsdfl；")
         APIconsequence = await NowNowUser.Send_API()
         kekka = await various_calculation(APIconsequence)
         await SendDis(*(kekka))
@@ -104,6 +100,11 @@ async def All_process(NowNowUser):
 async def main():
     global count
     count = 0
-    await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
+    await ActiveDisco.prepare_bot()
+    
+    # Discordボットの準備ができたら、APIリクエストを実行
+    for NowUser in Alluser:
+        await All_process(NowUser)
+    # await asyncio.gather(ActiveDisco.prepare_bot(),*(All_process(NowUser) for NowUser in Alluser))
 
 asyncio.run(main())
