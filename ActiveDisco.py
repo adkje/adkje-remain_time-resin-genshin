@@ -44,6 +44,7 @@ async def prepare_bot():
         print("ボット準備タイムアウト")
         return False
 
+print("githubのtest")
 
 async def caveat():
     await SendUser.send("樹脂が溢れています！")
