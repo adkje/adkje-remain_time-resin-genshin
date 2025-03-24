@@ -46,41 +46,43 @@ class User:
         self.Receive_response = requests.get(url, cookies = self.cookies, params = self.params).json()
         self.Receive_resin_time = int(self.Receive_response["data"]["resin_recovery_time"])
         return self.Receive_resin_time
-
-async def various_calculation(keisan_resin_time):
-
-    keisan_wait_time = keisan_resin_time % 480
-    #  次の樹脂までの秒数(60*8分の余りの秒数)。sleep時間に使用。
-    print(f"待つ秒数は{keisan_wait_time}")
-
-
-    Max_minute = math.ceil(keisan_resin_time / 60)
-    #   樹脂が200になるまでの分数。メッセージに載せる用。
-    print(f"残り分数は{Max_minute}")
     
-    return keisan_resin_time,Max_minute,keisan_wait_time
+    async def various_calculation(keisan_resin_time):
+
+        keisan_wait_time = keisan_resin_time % 480
+        #  次の樹脂までの秒数(60*8分の余りの秒数)。sleep時間に使用。
+        print(f"待つ秒数は{keisan_wait_time}")
+
+
+        Max_minute = math.ceil(keisan_resin_time / 60)
+        #   樹脂が200になるまでの分数。メッセージに載せる用。
+        print(f"残り分数は{Max_minute}")
+    
+        return keisan_resin_time,Max_minute,keisan_wait_time
     
     
 
-async def SendDis(keisan_resin_time,Max_minute,keisan_wait_time):
-    if keisan_resin_time != 0:
+    async def SendDis(keisan_resin_time,Max_minute,keisan_wait_time):
+        if keisan_resin_time != 0:
 
-        print(f"残りの秒数は{keisan_resin_time}")
+            print(f"残りの秒数は{keisan_resin_time}")
 
-        # if 9600 > keisan_resin_time:
-        if 9600 > keisan_resin_time > 9120:
-        # デバッグ用
-        # 樹脂が180以上
-            print(f"樹脂がmaxになるまで残り{Max_minute}")
-            await ActiveDisco.OverOneHundredEighy(Max_minute)
+            # if 9600 > keisan_resin_time:
+            if 9600 > keisan_resin_time > 9120:
+            # デバッグ用
+            # 樹脂が180以上
+                print(f"樹脂がmaxになるまで残り{Max_minute}")
+                await ActiveDisco.OverOneHundredEighy(Max_minute)
 
-        await asyncio.sleep(keisan_wait_time)
+            await asyncio.sleep(keisan_wait_time)
 
-    else:
-        print("樹脂がマックスです。")
-        await ActiveDisco.caveat()
-        await asyncio.sleep(1200)
-        # 秘境の樹脂消費量に合わせた20樹脂(60*20)
+        else:
+            print("樹脂がマックスです。")
+            await ActiveDisco.caveat()
+            await asyncio.sleep(1200)
+            # 秘境の樹脂消費量に合わせた20樹脂(60*20)
+
+
 
 
 User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltuid,Glist.User1_uid)
