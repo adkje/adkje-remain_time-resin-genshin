@@ -17,6 +17,7 @@ url = "https://bbs-api-os.hoyoverse.com/game_record/genshin/api/dailyNote"
 
 # これclassを使う意味ある？
 # APIの送信
+
 class User:
     # APIに必要な情報の格納
     def __init__(self,wait_time,name,cookie_token,ltoken,ltuid,uid):
@@ -41,18 +42,18 @@ class User:
         
     # 違う処理を作るにあたってAPI送信=計算となるのは良くないと感じた。
     async def Send_API(self):
-        print("SendAPI")
+        print("APIを送ります。")
         self.Receive_response = requests.get(url, cookies = self.cookies, params = self.params).json()
         self.Receive_resin_time = int(self.Receive_response["data"]["resin_recovery_time"])
         return self.Receive_resin_time
 
 async def various_calculation(keisan_resin_time):
-    global keisan_wait_time
+
     keisan_wait_time = keisan_resin_time % 480
-    #  次の樹脂までの秒数(60秒*8で八分)。sleep時間に使用。
+    #  次の樹脂までの秒数(60*8分の余りの秒数)。sleep時間に使用。
     print(f"待つ秒数は{keisan_wait_time}")
 
-    global Max_minute
+
     Max_minute = math.ceil(keisan_resin_time / 60)
     #   樹脂が200になるまでの分数。メッセージに載せる用。
     print(f"残り分数は{Max_minute}")
@@ -63,21 +64,20 @@ async def various_calculation(keisan_resin_time):
 
 async def SendDis(keisan_resin_time,Max_minute,keisan_wait_time):
     if keisan_resin_time != 0:
-    # if 100000 > self.resin_time:
-    # デバッグ用
-        print("okurimasu")
-        print(keisan_resin_time)
+
+        print(f"残りの秒数は{keisan_resin_time}")
 
         # if 9600 > keisan_resin_time:
-        if 70000 > keisan_resin_time:
+        if 9600 > keisan_resin_time > 9120:
+        # デバッグ用
         # 樹脂が180以上
-            print("これはMax_minuteです。")
-            print(Max_minute)
+            print(f"樹脂がmaxになるまで残り{Max_minute}")
             await ActiveDisco.OverOneHundredEighy(Max_minute)
-            await asyncio.sleep(keisan_wait_time)
+
+        await asyncio.sleep(keisan_wait_time)
 
     else:
-        print(keisan_wait_time)
+        print("樹脂がマックスです。")
         await ActiveDisco.caveat()
         await asyncio.sleep(1200)
         # 秘境の樹脂消費量に合わせた20樹脂(60*20)
@@ -88,23 +88,16 @@ User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_l
 
 Alluser = [User1]
 
-# 美しくない実装だからいつか直す。多分。おそらく。
-def once(count):
-    if count == 0:
-        time.sleep(20)
-        count += 1
+
 
 async def All_process(NowNowUser):
-        # ActiveDisco.BootBot()でSendUserが定義される前にSendDisが実行されてエラーが出るからそれの対策。
-        once(count)
-        APIconsequence = await NowNowUser.Send_API()
-        kekka = await various_calculation(APIconsequence)
-        await SendDis(*(kekka))
+        await ActiveDisco.bot_ready.wait()
+        while True:
+            APIconsequence = await NowNowUser.Send_API()
+            kekka = await various_calculation(APIconsequence)
+            await SendDis(*(kekka))
 
 async def main():
-    global count
-    count = 0
-    while True:
-        await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
+    await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
 
 asyncio.run(main())
