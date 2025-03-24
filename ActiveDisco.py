@@ -24,8 +24,8 @@ async def on_ready():
     
 
     
-async def OverOneHundredEighy(UntilTwoHundred):
-    await SendUser.send(f"180を超しています！200に達するまで{UntilTwoHundred}分です。！")
+async def OverOneHundredEighy(UntilTwoHundred,nowresin):
+    await SendUser.send(f"現在の樹脂は{nowresin}です！200に達するまで{UntilTwoHundred}分です！")
     
 async def caveat():
     await SendUser.send("樹脂が溢れています！")

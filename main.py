@@ -20,14 +20,20 @@ url = "https://bbs-api-os.hoyoverse.com/game_record/genshin/api/dailyNote"
 
 class User:
     # APIに必要な情報の格納
-    def __init__(self,wait_time,name,cookie_token,ltoken,ltuid,uid):
-        self.wait_time = wait_time
+    def __init__(self,name,cookie_token,ltoken,ltuid,uid):
+        self.keisan_resin_time = 0
+        self.Max_minute = 0
+        self.keisan_wait_time = 0
+        self.nowresin = 0
+
         self.name = name
 
         self.cookie_token = cookie_token
         self.ltoken = ltoken
         self.ltuid = ltuid
         self.uid = uid
+
+
         self.cookies = {
                           "ltoken_v2": self.ltoken,
                           "ltuid_v2": self.ltuid,
@@ -45,9 +51,11 @@ class User:
         print("APIを送ります。")
         self.Receive_response = requests.get(url, cookies = self.cookies, params = self.params).json()
         self.Receive_resin_time = int(self.Receive_response["data"]["resin_recovery_time"])
-        return self.Receive_resin_time
-    
-    async def various_calculation(keisan_resin_time):
+        self.nowresin = int(self.Receive_response["data"]["current_resin"])
+        return self.Receive_resin_time,self.nowresin
+
+
+    async def various_calculation(self,keisan_resin_time,nowresin):
 
         keisan_wait_time = keisan_resin_time % 480
         #  次の樹脂までの秒数(60*8分の余りの秒数)。sleep時間に使用。
@@ -58,21 +66,22 @@ class User:
         #   樹脂が200になるまでの分数。メッセージに載せる用。
         print(f"残り分数は{Max_minute}")
     
-        return keisan_resin_time,Max_minute,keisan_wait_time
+        return keisan_resin_time,Max_minute,keisan_wait_time,nowresin
     
     
 
-    async def SendDis(keisan_resin_time,Max_minute,keisan_wait_time):
+    async def SendDis(self,keisan_resin_time,Max_minute,keisan_wait_time,nowresin):
         if keisan_resin_time != 0:
 
             print(f"残りの秒数は{keisan_resin_time}")
 
-            # if 9600 > keisan_resin_time:
+            # if 70000 > keisan_resin_time > 9120:
+            # デバック用
+
             if 9600 > keisan_resin_time > 9120:
-            # デバッグ用
-            # 樹脂が180以上
+            # 樹脂が180以上181以下
                 print(f"樹脂がmaxになるまで残り{Max_minute}")
-                await ActiveDisco.OverOneHundredEighy(Max_minute)
+                await ActiveDisco.OverOneHundredEighy(Max_minute,nowresin)
 
             await asyncio.sleep(keisan_wait_time)
 
@@ -85,7 +94,7 @@ class User:
 
 
 
-User1 = User(0,"User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltuid,Glist.User1_uid)
+User1 = User("User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltuid,Glist.User1_uid)
 # User2 = User(0,"User2",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltuid,Glist.User1_uid)
 
 Alluser = [User1]
@@ -96,8 +105,8 @@ async def All_process(NowNowUser):
         await ActiveDisco.bot_ready.wait()
         while True:
             APIconsequence = await NowNowUser.Send_API()
-            kekka = await various_calculation(APIconsequence)
-            await SendDis(*(kekka))
+            kekka = await NowNowUser.various_calculation(*(APIconsequence))
+            await NowNowUser.SendDis(*(kekka))
 
 async def main():
     await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
