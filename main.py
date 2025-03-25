@@ -2,8 +2,10 @@ import asyncio
 import requests
 import time
 import math
+
 import GenshinAPIList as Glist
 import ActiveDisco
+import PassiveDisco
 # import GenshinAPIListForGithub as Glist
 
 # url = "https://bbs-api.mihoyo.com/apihub/wapi/search"
@@ -102,13 +104,13 @@ Alluser = [User1]
 
 
 async def All_process(NowNowUser):
-        await ActiveDisco.bot_ready.wait()
+        await PassiveDisco.bot_ready.wait()
         while True:
             APIconsequence = await NowNowUser.Send_API()
             kekka = await NowNowUser.various_calculation(*(APIconsequence))
             await NowNowUser.SendDis(*(kekka))
 
 async def main():
-    await asyncio.gather(ActiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
+    await asyncio.gather(PassiveDisco.BootBot(),*(All_process(NowUser) for NowUser in Alluser))
 
 asyncio.run(main())

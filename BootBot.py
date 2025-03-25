@@ -22,12 +22,12 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$getresin'):
-        # await BootBot.SendUser.message.send(f"現在の樹脂は{main.nowresin}です！200に達するまで{main.UntilTwoHundred}分です！")
-        await message.channel.send("現在の樹脂はaiueoです！200に達するまでaiueo分です！")
+    # if message.content.startswith('$getresin'):
+    #     # await BootBot.SendUser.message.send(f"現在の樹脂は{main.nowresin}です！200に達するまで{main.UntilTwoHundred}分です！")
+    #     await message.channel.send("現在の樹脂はaiueoです！200に達するまでaiueo分です！")
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+    # if message.content.startswith('$hello'):
+    #     await message.channel.send('Hello!')
 
 async def BootBot():
     await client.start(Distoken)
