@@ -23,13 +23,14 @@ async def caveat():
 async def while_process(NowNowUser):
         await BootBot.bot_ready.wait()
         while True:
+            
             APIconsequence = await NowNowUser.Send_API()
             kekka = await NowNowUser.various_calculation(*(APIconsequence))
 
             # if 70000 > keisan_resin_time > 9120:
             # デバック用
             # if 9600 > kekka[0] > 9120:
-            if 9600 > kekka[0] > 9100:
+            if 9600 > kekka[0] > 9120:
             # 樹脂が180以上181以下
                 print(f"樹脂がmaxになるまで残り{kekka[1]}")
                 await OverOneHundredEighy(kekka[3],kekka[1])

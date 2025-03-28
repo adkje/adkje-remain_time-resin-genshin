@@ -49,10 +49,15 @@ class User:
     async def Send_API(self):
         print("APIを送ります。")
         self.Receive_response = requests.get(url, cookies = self.cookies, params = self.params).json()
-        # 値がうまく送れていない
-        self.Receive_resin_time = int(self.Receive_response["data"]["resin_recovery_time"])
-        self.nowresin = int(self.Receive_response["data"]["current_resin"])
-        return self.Receive_resin_time,self.nowresin
+        try: 
+            self.Receive_resin_time = int(self.Receive_response["data"]["resin_recovery_time"])
+        except KeyError:
+            await asyncio.sleep(18000)
+            # とりま5時間
+            User1.Send_API(self)
+        else:
+            self.nowresin = int(self.Receive_response["data"]["current_resin"])
+            return self.Receive_resin_time,self.nowresin
 
 
     async def various_calculation(self,keisan_resin_time,nowresin):
@@ -84,11 +89,6 @@ User1 = User("User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltu
 
 Alluser = [User1]
 
-
-User1 = User("User1",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltuid,Glist.User1_uid)
-# User2 = User(0,"User2",Glist.User1_cookie_token,Glist.User1_ltoken,Glist.User1_ltuid,Glist.User1_uid)
-
-Alluser = [User1]
 
 async def one_process(NowNowUser):
             APIconsequence = await NowNowUser.Send_API()
